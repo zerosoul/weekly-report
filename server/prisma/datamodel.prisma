@@ -1,0 +1,73 @@
+type Post {
+  id: ID! @unique
+  published: Boolean! @default(value: "false")
+  title: String!
+  content: String!
+}
+# 用户
+type User {
+  id: ID! @unique
+  createAt: DateTime!
+  name: String!
+  nickname: String
+  avatar: String
+  email: String! @unique
+  intro: String
+  birthday: DateTime
+  sex: Int! @default(value: 1) #1男 2女
+  role: UserRole!
+  group: [Group!]!
+}
+#分组
+type Group {
+  id: ID! @unique
+  parent: Group
+  createAt: DateTime!
+  name: String!
+  intro: String
+  users: [User!]!
+}
+# 周报
+type Report {
+  id: ID! @unique
+  title: String!
+  status: ReportStatus!
+  startTime: DateTime!
+  endTime: DateTime!
+  reportBy: User!
+  items: [ReportItem!]!
+}
+# 周报每一项
+type ReportItem {
+  id: ID! @unique
+  type: ItemType!
+  content: String!
+  progress: String!
+  remark: String
+}
+#周报状态
+enum ReportStatus {
+  UNSEND
+  SEND
+  SEND_FAIL
+}
+#每一项类型：已完成、下周要做的
+enum ItemType {
+  DONE
+  TODO
+}
+#角色
+enum UserRole {
+  ADMIN
+  LEADER
+  MANAGER
+  STAFF
+}
+# 发送记录
+type SendRecord {
+  id: ID! @unique
+  sendReport: Report!
+  sendBy: User!
+  createAt: DateTime!
+  success: Boolean! @default(value: "true")
+}

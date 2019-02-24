@@ -1,0 +1,14 @@
+{
+  "name": "weekly-report",
+  "scripts": {
+    "start": "node src/index.js",
+    "prisma": "prisma"
+  },
+  "dependencies": {
+    "graphql-yoga": "1.17.4",
+    "prisma-client-lib": "1.27.0"
+  },
+  "devDependencies": {
+    "prisma": "1.22.1"
+  }
+}

@@ -1,0 +1,17 @@
+type Query {
+  feed: [Post!]!
+  drafts: [Post!]!
+  post(id: ID!): Post
+}
+
+type Mutation {
+  createDraft(title: String!, content: String): Post
+  deletePost(id: ID!): Post
+}
+
+type Post {
+  id: ID!
+  published: Boolean!
+  title: String!
+  content: String!
+}
