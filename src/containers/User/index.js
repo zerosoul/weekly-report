@@ -77,21 +77,6 @@ export default class User extends Component {
     );
   }
 }
-{
-  /* <>
-  <h1>Feed</h1>
-  {data.feed &&
-    data.feed.map(post => (
-      <Post
-        key={post.id}
-        post={post}
-        refresh={() => refetch()}
-        isDraft={!post.published}
-      />
-    ))}
-  {this.props.children}
-</> */
-}
 export const USERS_QUERY = gql`
   query UsersQuery {
     users {

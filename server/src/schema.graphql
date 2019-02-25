@@ -1,17 +1,77 @@
 type Query {
-  feed: [Post!]!
-  drafts: [Post!]!
-  post(id: ID!): Post
+  users: UserList!
 }
-
+type UserList {
+  users: [User!]!
+  total: Int!
+}
 type Mutation {
-  createDraft(title: String!, content: String): Post
-  deletePost(id: ID!): Post
+  createUser: User!
 }
-
-type Post {
+# 用户
+type User {
   id: ID!
-  published: Boolean!
+  createAt: String!
+  name: String!
+  nickname: String
+  avatar: String
+  email: String!
+  intro: String
+  birthday: String
+  sex: Int!
+  role: UserRole!
+  group: [Group!]!
+}
+#分组
+type Group {
+  id: ID!
+  parent: Group
+  createAt: String!
+  name: String!
+  intro: String
+  users: [User!]!
+}
+# 周报
+type Report {
+  id: ID!
   title: String!
+  status: ReportStatus!
+  startTime: String!
+  endTime: String!
+  reportBy: User!
+  items: [ReportItem!]!
+}
+# 周报每一项
+type ReportItem {
+  id: ID!
+  type: ItemType!
   content: String!
+  progress: String!
+  remark: String
+}
+#周报状态
+enum ReportStatus {
+  UNSEND
+  SEND
+  SEND_FAIL
+}
+#每一项类型：已完成、下周要做的
+enum ItemType {
+  DONE
+  TODO
+}
+#角色
+enum UserRole {
+  ADMIN
+  LEADER
+  MANAGER
+  STAFF
+}
+# 发送记录
+type SendRecord {
+  id: ID!
+  sendReport: Report!
+  sendBy: User!
+  createAt: String!
+  success: Boolean!
 }
