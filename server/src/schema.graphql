@@ -1,12 +1,24 @@
 type Query {
-  users: UserList!
+  userList: UserList!
 }
+# 带分页的用户列表
 type UserList {
   users: [User!]!
   total: Int!
 }
 type Mutation {
-  createUser: User!
+  upsertUser(data: UserInput!): User!
+}
+input UserInput {
+  id: ID
+  email: String!
+  createAt: String
+  name: String!
+  nickname: String
+  avatar: String
+  intro: String
+  birthday: String
+  sex: Int
 }
 # 用户
 type User {
@@ -22,7 +34,7 @@ type User {
   role: UserRole!
   group: [Group!]!
 }
-#分组
+# 分组
 type Group {
   id: ID!
   parent: Group

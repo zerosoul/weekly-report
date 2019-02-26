@@ -1,33 +1,11 @@
 import React, { Component } from 'react';
-import { Divider } from 'antd';
-import { Query } from 'react-apollo';
+import { Divider, Button } from 'antd';
 import { gql } from 'apollo-boost';
 
 import UserEditModal from './UserEditModal';
 import FilterForm from './FilterForm';
-import UserTable from './UserTable';
-
-const Users = [
-  {
-    id: 124,
-    name: '张三',
-    nickname: '喔喔',
-    intro: '张三张安我最强！'
-  },
-  {
-    id: 1242,
-    name: '张三2',
-    nickname: '喔喔',
-    intro: '张三442张安我最强！'
-  },
-  {
-    id: 1224,
-    name: '张三111',
-    nickname: '121',
-    email: 'ygd@df.com',
-    intro: '张三33张安我最强！'
-  }
-];
+// import UserTable from './UserTable';
+import QueryTable from '../../components/QueryTable';
 
 export default class User extends Component {
   state = {
@@ -35,9 +13,58 @@ export default class User extends Component {
     users: [],
     currUser: null
   };
-  onOpenEditModal = id => {
-    const { users } = this.state;
-    const currUser = users.find(user => user.id == id) || null;
+  Cols = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+      width: 50
+    },
+    {
+      title: '姓名/昵称',
+      dataIndex: 'name',
+      key: 'name'
+    },
+    {
+      title: '邮箱',
+      dataIndex: 'email',
+      key: 'email',
+      width: 400
+    },
+    {
+      title: '角色',
+      dataIndex: 'role',
+      key: 'role'
+    },
+    {
+      title: '头像',
+      dataIndex: 'avatar',
+      key: 'avatar'
+    },
+    {
+      title: '操作',
+      dataIndex: 'opt',
+      key: 'opt',
+      width: 200,
+      render: (txt, record) => {
+        console.log('record', record);
+        return (
+          <Button.Group size="small">
+            <Button
+              type="primary"
+              onClick={() => {
+                this.onOpenEditModal(record);
+              }}
+            >
+              编辑
+            </Button>
+            <Button type="danger">删除</Button>
+          </Button.Group>
+        );
+      }
+    }
+  ];
+  onOpenEditModal = currUser => {
     this.setState({
       editModalVisible: true,
       currUser
@@ -49,44 +76,34 @@ export default class User extends Component {
       currUser: null
     });
   };
-  componentDidMount() {
-    this.setState({ users: Users });
-  }
   render() {
-    const { editModalVisible, users } = this.state;
+    const { editModalVisible, currUser } = this.state;
     return (
       <>
         <FilterForm onOpenEditModal={this.onOpenEditModal} />
         <Divider />
-        <Query query={USERS_QUERY}>
-          {({ data, loading, error, refetch }) => {
-            if (error) {
-              return <div>An unexpected error occured.</div>;
-            }
-            return (
-              <UserTable
-                loading={loading}
-                data={data.users}
-                onOpenEditModal={this.onOpenEditModal}
-              />
-            );
-          }}
-        </Query>
-        {editModalVisible ? <UserEditModal onCloseEditModal={this.onCloseEditModal} /> : null}
+        <QueryTable cols={this.Cols} gql={USERS_QUERY} />
+
+        {editModalVisible ? (
+          <UserEditModal data={currUser} onCloseEditModal={this.onCloseEditModal} />
+        ) : null}
       </>
     );
   }
 }
 export const USERS_QUERY = gql`
   query UsersQuery {
-    users {
-      id
-      name
-      intro
-      role
-      avatar
-      email
-      nickname
+    userList {
+      users {
+        id
+        name
+        intro
+        role
+        avatar
+        email
+        nickname
+      }
+      total
     }
   }
 `;

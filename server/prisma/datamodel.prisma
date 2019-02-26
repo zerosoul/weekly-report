@@ -15,8 +15,8 @@ type User {
   intro: String
   birthday: DateTime
   sex: Int! @default(value: 1) #1男 2女
-  role: UserRole!
-  group: [Group!]!
+  role: UserRole! @default(value: STAFF)
+  group: [Group!]! @default(value: [])
 }
 #分组
 type Group {

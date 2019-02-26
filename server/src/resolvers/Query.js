@@ -1,5 +1,6 @@
-const users = async (parent, args, ctx, info) => {
-  const { filter, skip, first, orderBy } = args;
+import { PAGE_SIZE } from '../config';
+const userList = async (parent, args, ctx, info) => {
+  const { filter, skip = 0, first = PAGE_SIZE, orderBy } = args;
   console.log('users query args', args);
   // console.log('users query info', info);
 
@@ -15,8 +16,8 @@ const users = async (parent, args, ctx, info) => {
     .usersConnection({ where })
     .aggregate()
     .count();
-  return { users, total };
+  return { users, total, pageSize: first, currPage: skip / first + 1 };
 };
 module.exports = {
-  users
+  userList
 };

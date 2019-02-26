@@ -1122,7 +1122,7 @@ input UserCreateInput {
   intro: String
   birthday: DateTime
   sex: Int
-  role: UserRole!
+  role: UserRole
   group: GroupCreateManyWithoutUsersInput
 }
 
@@ -1145,7 +1145,7 @@ input UserCreateWithoutGroupInput {
   intro: String
   birthday: DateTime
   sex: Int
-  role: UserRole!
+  role: UserRole
 }
 
 type UserEdge {

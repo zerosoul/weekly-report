@@ -11,7 +11,7 @@ import LoginPage from './containers/Login';
 import RegPage from './containers/Reg';
 import App from './app';
 
-const client = new ApolloClient({ uri: 'http://localhost:4466' });
+const client = new ApolloClient({ uri: 'http://localhost:4001' });
 ReactDOM.render(
   <ApolloProvider client={client}>
     <LocaleProvider locale={zh_CN}>
