@@ -1,18 +1,22 @@
 type Query {
-  userList: UserList!
+  userList(skip: Int, first: Int, filter: String, orderBy: String): UserList!
 }
 # 带分页的用户列表
 type UserList {
   users: [User!]!
+  pageSize: Int!
+  current: Int!
   total: Int!
 }
 type Mutation {
   upsertUser(data: UserInput!): User!
+  removeUser(id: ID!): Boolean!
 }
 input UserInput {
   id: ID
   email: String!
   createAt: String
+  role: UserRole
   name: String!
   nickname: String
   avatar: String

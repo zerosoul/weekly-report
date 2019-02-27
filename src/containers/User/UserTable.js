@@ -12,7 +12,10 @@ export default class UserTable extends Component {
     {
       title: '姓名/昵称',
       dataIndex: 'name',
-      key: 'name'
+      key: 'name',
+      render: (val, record) => {
+        return `${val}/${record.nickname}`;
+      }
     },
     {
       title: '邮箱',

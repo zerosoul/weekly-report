@@ -4,6 +4,7 @@
   "devDependencies": {
     "@babel/core": "^7.3.3",
     "@babel/plugin-proposal-class-properties": "^7.3.3",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.2.0",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/plugin-transform-runtime": "^7.2.0",
     "@babel/preset-env": "^7.3.1",
@@ -47,6 +48,7 @@
     "antd": "^3.13.6",
     "apollo-boost": "0.1.28",
     "graphql": "^14.1.1",
+    "moment": "^2.24.0",
     "postcss-flexbugs-fixes": "4.1.0",
     "postcss-preset-env": "6.5.0",
     "postcss-safe-parser": "4.0.1",

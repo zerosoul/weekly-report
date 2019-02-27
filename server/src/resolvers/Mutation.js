@@ -2,7 +2,7 @@
 // const bcrypt = require("bcryptjs");
 // const { APP_SECRET, getUserId } = require("../utils");
 const upsertUser = async (parent, args, ctx, info) => {
-  console.log('create user data', args);
+  console.log('UPSERT user data', args);
   const { id = '', ...rest } = args.data;
   const user = await ctx.prisma.upsertUser({
     where: {
@@ -13,10 +13,16 @@ const upsertUser = async (parent, args, ctx, info) => {
     },
     create: {
       ...rest,
-      createAt: new Date(),
-      role: 'LEADER'
+      createAt: new Date()
     }
   });
   return user;
 };
-module.exports = { upsertUser };
+const removeUser = async (parent, args, ctx) => {
+  const { id } = args;
+  const deletedUser = await ctx.prisma.deleteUser({
+    id
+  });
+  return !!deletedUser;
+};
+module.exports = { upsertUser, removeUser };

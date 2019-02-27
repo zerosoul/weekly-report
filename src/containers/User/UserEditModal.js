@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Modal, Form, Row, Col, Input, Divider, Button, Skeleton } from 'antd';
+import { Modal, Form, Row, Col, Input, Divider, Button, Skeleton, Select, DatePicker } from 'antd';
 import { Mutation } from 'react-apollo';
 import { gql } from 'apollo-boost';
 
 const { Item } = Form;
-
+const { Option } = Select;
+import { ROLES } from '../../config/const';
+import moment from 'moment';
 const UPSERT_USER = gql`
   mutation UpsertUser($data: UserInput!) {
     upsertUser(data: $data) {
@@ -46,14 +48,19 @@ class UserEditModal extends Component {
       form: { getFieldDecorator }
     } = this.props;
     console.log('item data', data);
-    const { name = '', nickname = '', intro = '', email, parent = {} } = data || {};
+    const { name = '', nickname = '', birthday, intro = '', sex = 1, role = 'STAFF', email } =
+      data || {};
     return (
       <Modal
         style={{ top: 10 }}
         title={data ? `编辑` : `新增`}
         maskClosable={false}
         visible={true}
-        onCancel={onCloseEditModal}
+        onCancel={() => {
+          console.log('refresh is');
+
+          onCloseEditModal(false);
+        }}
         footer={false}
       >
         <Mutation mutation={UPSERT_USER}>
@@ -77,6 +84,9 @@ class UserEditModal extends Component {
                       if (currUser) {
                         values.id = currUser.id;
                       }
+                      values.birthday = values.birthday
+                        ? values.birthday.format('YYYY-MM-DD')
+                        : null;
                       const user = await upsertUser({ variables: { data: values } });
                       console.log('user return', user);
 
@@ -113,7 +123,41 @@ class UserEditModal extends Component {
                       })(<Input placeholder="邮箱" />)}
                     </Item>
                   </Col>
-                  <Col span={24}>
+                  <Col span={12}>
+                    <Item label="生日" {...ColLayout}>
+                      {getFieldDecorator('birthday', {
+                        initialValue: birthday ? moment(birthday, 'YYYY-MM-DD') : undefined
+                      })(<DatePicker placeholder="请选择日期" format={`YYYY-MM-DD`} />)}
+                    </Item>
+                  </Col>
+                  <Col span={12}>
+                    <Item label="性别" {...ColLayout}>
+                      {getFieldDecorator('sex', {
+                        initialValue: sex
+                      })(
+                        <Select>
+                          <Option value={1}>男</Option>
+                          <Option value={2}>女</Option>
+                        </Select>
+                      )}
+                    </Item>
+                  </Col>
+                  <Col span={12}>
+                    <Item label="角色" {...ColLayout}>
+                      {getFieldDecorator('role', {
+                        initialValue: role
+                      })(
+                        <Select>
+                          {Object.entries(ROLES).map(role => (
+                            <Option key={role[0]} value={role[0]}>
+                              {role[1]}
+                            </Option>
+                          ))}
+                        </Select>
+                      )}
+                    </Item>
+                  </Col>
+                  <Col span={12}>
                     <Item label="简介" {...ColLayout}>
                       {getFieldDecorator('intro', {
                         initialValue: intro
@@ -126,7 +170,13 @@ class UserEditModal extends Component {
                   确定
                 </Button>
                 <Divider type="vertical" />
-                <Button onClick={onCloseEditModal}>取消</Button>
+                <Button
+                  onClick={() => {
+                    onCloseEditModal(false);
+                  }}
+                >
+                  取消
+                </Button>
               </Form>
             );
           }}
