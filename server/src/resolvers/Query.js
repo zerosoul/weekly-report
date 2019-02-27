@@ -7,11 +7,11 @@ const userList = async (parent, args, ctx, info) => {
 
   const where = filter
     ? {
-        OR: [{ name_contains: filter }, { nickname_contains: filter }]
+        AND: filter
       }
     : {};
   const users = await ctx.prisma.users({ where, skip, first, orderBy });
-  // console.log('users', users);
+  console.log('users', users);
 
   const total = await ctx.prisma
     .usersConnection({ where })

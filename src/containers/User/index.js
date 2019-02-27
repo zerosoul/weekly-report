@@ -113,7 +113,7 @@ export default class User extends Component {
       }
     }
   ];
-  onOpenEditModal = currUser => {
+  onOpenEditModal = (currUser = null) => {
     this.setState({
       editModalVisible: true,
       currUser
@@ -142,7 +142,7 @@ export default class User extends Component {
   updateVariables = (vars, isReset = false) => {
     const { variables } = this.state;
     this.setState({
-      variables: isReset ? {} : { ...variables, ...vars }
+      variables: isReset ? { ...vars } : { ...variables, ...vars }
     });
   };
   render() {
@@ -168,7 +168,7 @@ export default class User extends Component {
   }
 }
 const USERS_QUERY = gql`
-  query UsersQuery($skip: Int, $first: Int, $orderBy: String, $filter: String) {
+  query UsersQuery($skip: Int, $first: Int, $orderBy: String, $filter: UserFilterInput) {
     resp: userList(skip: $skip, first: $first, orderBy: $orderBy, filter: $filter) {
       list: users {
         id

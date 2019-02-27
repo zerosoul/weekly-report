@@ -1,17 +1,11 @@
-type Post {
-  id: ID! @unique
-  published: Boolean! @default(value: "false")
-  title: String!
-  content: String!
-}
 # 用户
 type User {
   id: ID! @unique
+  email: String! @unique
   createAt: DateTime!
   name: String!
   nickname: String
   avatar: String
-  email: String! @unique
   intro: String
   birthday: DateTime
   sex: Int! @default(value: 1) #1男 2女
@@ -21,9 +15,9 @@ type User {
 #分组
 type Group {
   id: ID! @unique
+  name: String!
   parent: Group
   createAt: DateTime!
-  name: String!
   intro: String
   users: [User!]!
 }

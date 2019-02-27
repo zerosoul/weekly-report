@@ -1,5 +1,17 @@
 import React, { Component } from 'react';
-import { Modal, Form, Row, Col, Input, Divider, Button, Skeleton, Select, DatePicker } from 'antd';
+import {
+  Modal,
+  Form,
+  Row,
+  Col,
+  Input,
+  Divider,
+  Button,
+  Skeleton,
+  Select,
+  DatePicker,
+  message
+} from 'antd';
 import { Mutation } from 'react-apollo';
 import { gql } from 'apollo-boost';
 
@@ -26,21 +38,6 @@ const ColLayout = {
 
 // 包含新增和编辑
 class UserEditModal extends Component {
-  onSubmit = () => {
-    // console.log('values', values);
-    const { form, onClickEditBtn, data, onCloseEditModal } = this.props;
-    form.validateFields((error, values) => {
-      if (!error) {
-        //   编辑
-        if (data) {
-          values.id = data.id;
-        }
-        onClickEditBtn(values);
-        onCloseEditModal();
-      }
-    });
-  };
-
   render() {
     const {
       data,
@@ -87,8 +84,10 @@ class UserEditModal extends Component {
                       values.birthday = values.birthday
                         ? values.birthday.format('YYYY-MM-DD')
                         : null;
-                      const user = await upsertUser({ variables: { data: values } });
-                      console.log('user return', user);
+                      await upsertUser({ variables: { data: values } });
+                      console.log('curr user', currUser);
+
+                      message.success(currUser ? '更新成功！' : '新建成功！');
 
                       onCloseEditModal();
                     }
@@ -119,7 +118,14 @@ class UserEditModal extends Component {
                   <Col span={12}>
                     <Item label="邮箱" {...ColLayout}>
                       {getFieldDecorator('email', {
-                        initialValue: email
+                        initialValue: email,
+                        rules: [
+                          { type: 'email', message: '邮箱格式有误' },
+                          {
+                            required: true,
+                            message: '邮箱不能为空'
+                          }
+                        ]
                       })(<Input placeholder="邮箱" />)}
                     </Item>
                   </Col>

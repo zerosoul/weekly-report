@@ -14,7 +14,7 @@ export default class QueryTable extends Component {
       ...rest
     } = this.props;
     return (
-      <Query query={gql} variables={variables}>
+      <Query query={gql} variables={variables} fetchPolicy="network-only">
         {({ data, loading, error, refetch, fetchMore }) => {
           if (isRefetch) {
             refetch();

@@ -1,5 +1,5 @@
 type Query {
-  userList(skip: Int, first: Int, filter: String, orderBy: String): UserList!
+  userList(skip: Int, first: Int, filter: UserFilterInput, orderBy: String): UserList!
 }
 # 带分页的用户列表
 type UserList {
@@ -15,14 +15,19 @@ type Mutation {
 input UserInput {
   id: ID
   email: String!
+  name: String!
   createAt: String
   role: UserRole
-  name: String!
   nickname: String
   avatar: String
   intro: String
   birthday: String
   sex: Int
+}
+input UserFilterInput {
+  name_contains: String
+  nickname_contains: String
+  email_contains: String
 }
 # 用户
 type User {
