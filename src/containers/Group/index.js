@@ -28,6 +28,14 @@ export default class Group extends Component {
       key: 'name'
     },
     {
+      title: '部门邮箱',
+      dataIndex: 'email',
+      key: 'email',
+      render: email => {
+        return email ? email : <Tag color="magenta">暂未设置</Tag>;
+      }
+    },
+    {
       title: '简介',
       dataIndex: 'intro',
       key: 'intro',
@@ -150,6 +158,7 @@ const GROUP_QUERY = gql`
       list: groups {
         id
         name
+        email
         intro
         # group {
         #   id

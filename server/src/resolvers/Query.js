@@ -11,13 +11,22 @@ const userList = async (parent, args, ctx, info) => {
       }
     : {};
   const users = await ctx.prisma.users({ where, skip, first, orderBy });
-  console.log('users', users);
+  console.log('curr info', users);
 
   const total = await ctx.prisma
     .usersConnection({ where })
     .aggregate()
     .count();
   return { users, total, pageSize: first, current: skip / first + 1 };
+};
+//获取组织单条数据
+const group = async (parent, args, ctx, info) => {
+  // console.log('users query info', info);
+
+  const group = await ctx.prisma.group({ ...args });
+  console.log('group', group);
+
+  return group;
 };
 const groupList = async (parent, args, ctx, info) => {
   // 指定默认值
@@ -39,7 +48,9 @@ const groupList = async (parent, args, ctx, info) => {
     .count();
   return { groups, total, pageSize: first, current: skip / first + 1 };
 };
+
 module.exports = {
+  group,
   userList,
   groupList
 };

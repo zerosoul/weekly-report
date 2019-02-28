@@ -1,24 +1,11 @@
 import React, { Component } from 'react';
-import {
-  Modal,
-  Form,
-  Row,
-  Col,
-  Input,
-  Divider,
-  Button,
-  Skeleton,
-  Select,
-  DatePicker,
-  message
-} from 'antd';
+import { Modal, Form, Row, Col, Input, Divider, Button, Skeleton, Select, message } from 'antd';
 import { Mutation } from 'react-apollo';
 import { gql } from 'apollo-boost';
 
 const { Item } = Form;
 const { Option } = Select;
 import { ROLES } from '../../config/const';
-import moment from 'moment';
 const UPSERT_GROUP = gql`
   mutation UpsertGroup($data: GroupInput!) {
     upsertGroup(data: $data) {
@@ -45,11 +32,11 @@ class GroupEditModal extends Component {
       form: { getFieldDecorator }
     } = this.props;
     console.log('item data', data);
-    const { name = '', intro } = data || {};
+    const { name = '', email, intro } = data || {};
     return (
       <Modal
         style={{ top: 10 }}
-        title={data ? `编辑` : `新增`}
+        title={data ? `更新组织` : `创建组织`}
         maskClosable={false}
         visible={true}
         onCancel={() => {
@@ -105,7 +92,14 @@ class GroupEditModal extends Component {
                       })(<Input placeholder="名称" />)}
                     </Item>
                   </Col>
-
+                  <Col span={12}>
+                    <Item label="邮箱" {...ColLayout}>
+                      {getFieldDecorator('email', {
+                        initialValue: email,
+                        rules: [{ type: 'email', message: '邮箱格式有误' }]
+                      })(<Input placeholder="部门邮箱" />)}
+                    </Item>
+                  </Col>
                   <Col span={12}>
                     <Item label="简介" {...ColLayout}>
                       {getFieldDecorator('intro', {

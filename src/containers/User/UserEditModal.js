@@ -12,7 +12,7 @@ import {
   DatePicker,
   message
 } from 'antd';
-import { Mutation } from 'react-apollo';
+import { Mutation, Query } from 'react-apollo';
 import { gql } from 'apollo-boost';
 
 const { Item } = Form;
@@ -24,6 +24,16 @@ const UPSERT_USER = gql`
     upsertUser(data: $data) {
       id
       name
+    }
+  }
+`;
+const GROUP_QUERY = gql`
+  query GroupsQuery($first: Int) {
+    resp: groupList(first: $first) {
+      list: groups {
+        id
+        name
+      }
     }
   }
 `;
@@ -45,12 +55,21 @@ class UserEditModal extends Component {
       form: { getFieldDecorator }
     } = this.props;
     console.log('item data', data);
-    const { name = '', nickname = '', birthday, intro = '', sex = 1, role = 'STAFF', email } =
-      data || {};
+    const {
+      name = '',
+      nickname = '',
+      birthday,
+      intro = '',
+      sex = 1,
+      role = 'STAFF',
+      email,
+      group = {}
+    } = data || {};
+    const { id: groupId } = group ? group : {};
     return (
       <Modal
         style={{ top: 10 }}
-        title={data ? `编辑` : `新增`}
+        title={data ? `更新用户` : `创建用户`}
         maskClosable={false}
         visible={true}
         onCancel={() => {
@@ -84,6 +103,8 @@ class UserEditModal extends Component {
                       values.birthday = values.birthday
                         ? values.birthday.format('YYYY-MM-DD')
                         : null;
+                      // values.group = values.group ? { id: values.group } : undefined;
+                      // delete values.group;
                       await upsertUser({ variables: { data: values } });
                       console.log('curr user', currUser);
 
@@ -162,6 +183,33 @@ class UserEditModal extends Component {
                         </Select>
                       )}
                     </Item>
+                  </Col>
+                  <Col span={12}>
+                    <Query query={GROUP_QUERY} variables={{ first: 100 }}>
+                      {({ data, error, loading }) => {
+                        if (error) {
+                          return <div>出错啦~~~</div>;
+                        }
+                        if (loading) {
+                          return <div>加载中...</div>;
+                        }
+                        return (
+                          <Item label="所属部门" {...ColLayout}>
+                            {getFieldDecorator('group', {
+                              initialValue: groupId
+                            })(
+                              <Select>
+                                {data.resp.list.map(group => (
+                                  <Option key={group.id} value={group.id}>
+                                    {group.name}
+                                  </Option>
+                                ))}
+                              </Select>
+                            )}
+                          </Item>
+                        );
+                      }}
+                    </Query>
                   </Col>
                   <Col span={12}>
                     <Item label="简介" {...ColLayout}>

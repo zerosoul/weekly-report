@@ -2,20 +2,36 @@
 // const bcrypt = require("bcryptjs");
 // const { APP_SECRET, getUserId } = require("../utils");
 const upsertUser = async (parent, args, ctx, info) => {
-  console.log('UPSERT user data', args);
-  const { id = '', ...rest } = args.data;
-  const user = await ctx.prisma.upsertUser({
-    where: {
-      id
-    },
-    update: {
-      ...rest
-    },
-    create: {
-      ...rest,
-      createAt: new Date()
-    }
-  });
+  const { id = '', group = '', ...rest } = args.data;
+  if (group) {
+    rest.group = {
+      connect: {
+        id: group
+      }
+    };
+  }
+  console.log('UPSERT user data', id, rest);
+  let user = {};
+  if (id) {
+    console.log('update user', id, rest);
+
+    user = await ctx.prisma.updateUser({ data: rest, where: { id } });
+  } else {
+    console.log('new user', rest);
+    user = await ctx.prisma.createUser({ ...rest, createAt: new Date() });
+  }
+  // const user = await ctx.prisma.upsertUser({
+  //   where: {
+  //     id
+  //   },
+  //   update: {
+  //     ...rest
+  //   },
+  //   create: {
+  //     ...rest,
+  //     createAt: new Date()
+  //   }
+  // });
   return user;
 };
 const removeUser = async (parent, args, ctx) => {

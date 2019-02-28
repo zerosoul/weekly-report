@@ -28,8 +28,9 @@ scalar DateTime
 type Group {
   id: ID!
   name: String!
-  parent: Group
+  email: String
   createAt: DateTime!
+  parent: Group
   intro: String
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
 }
@@ -42,15 +43,11 @@ type GroupConnection {
 
 input GroupCreateInput {
   name: String!
-  parent: GroupCreateOneInput
+  email: String
   createAt: DateTime!
+  parent: GroupCreateOneInput
   intro: String
   users: UserCreateManyWithoutGroupInput
-}
-
-input GroupCreateManyWithoutUsersInput {
-  create: [GroupCreateWithoutUsersInput!]
-  connect: [GroupWhereUniqueInput!]
 }
 
 input GroupCreateOneInput {
@@ -58,10 +55,16 @@ input GroupCreateOneInput {
   connect: GroupWhereUniqueInput
 }
 
+input GroupCreateOneWithoutUsersInput {
+  create: GroupCreateWithoutUsersInput
+  connect: GroupWhereUniqueInput
+}
+
 input GroupCreateWithoutUsersInput {
   name: String!
-  parent: GroupCreateOneInput
+  email: String
   createAt: DateTime!
+  parent: GroupCreateOneInput
   intro: String
 }
 
@@ -75,6 +78,8 @@ enum GroupOrderByInput {
   id_DESC
   name_ASC
   name_DESC
+  email_ASC
+  email_DESC
   createAt_ASC
   createAt_DESC
   intro_ASC
@@ -88,64 +93,9 @@ enum GroupOrderByInput {
 type GroupPreviousValues {
   id: ID!
   name: String!
+  email: String
   createAt: DateTime!
   intro: String
-}
-
-input GroupScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
-  createAt: DateTime
-  createAt_not: DateTime
-  createAt_in: [DateTime!]
-  createAt_not_in: [DateTime!]
-  createAt_lt: DateTime
-  createAt_lte: DateTime
-  createAt_gt: DateTime
-  createAt_gte: DateTime
-  intro: String
-  intro_not: String
-  intro_in: [String!]
-  intro_not_in: [String!]
-  intro_lt: String
-  intro_lte: String
-  intro_gt: String
-  intro_gte: String
-  intro_contains: String
-  intro_not_contains: String
-  intro_starts_with: String
-  intro_not_starts_with: String
-  intro_ends_with: String
-  intro_not_ends_with: String
-  AND: [GroupScalarWhereInput!]
-  OR: [GroupScalarWhereInput!]
-  NOT: [GroupScalarWhereInput!]
 }
 
 type GroupSubscriptionPayload {
@@ -168,46 +118,27 @@ input GroupSubscriptionWhereInput {
 
 input GroupUpdateDataInput {
   name: String
-  parent: GroupUpdateOneInput
+  email: String
   createAt: DateTime
+  parent: GroupUpdateOneInput
   intro: String
   users: UserUpdateManyWithoutGroupInput
 }
 
 input GroupUpdateInput {
   name: String
-  parent: GroupUpdateOneInput
+  email: String
   createAt: DateTime
+  parent: GroupUpdateOneInput
   intro: String
   users: UserUpdateManyWithoutGroupInput
 }
 
-input GroupUpdateManyDataInput {
-  name: String
-  createAt: DateTime
-  intro: String
-}
-
 input GroupUpdateManyMutationInput {
   name: String
+  email: String
   createAt: DateTime
   intro: String
-}
-
-input GroupUpdateManyWithoutUsersInput {
-  create: [GroupCreateWithoutUsersInput!]
-  delete: [GroupWhereUniqueInput!]
-  connect: [GroupWhereUniqueInput!]
-  disconnect: [GroupWhereUniqueInput!]
-  update: [GroupUpdateWithWhereUniqueWithoutUsersInput!]
-  upsert: [GroupUpsertWithWhereUniqueWithoutUsersInput!]
-  deleteMany: [GroupScalarWhereInput!]
-  updateMany: [GroupUpdateManyWithWhereNestedInput!]
-}
-
-input GroupUpdateManyWithWhereNestedInput {
-  where: GroupScalarWhereInput!
-  data: GroupUpdateManyDataInput!
 }
 
 input GroupUpdateOneInput {
@@ -219,16 +150,21 @@ input GroupUpdateOneInput {
   connect: GroupWhereUniqueInput
 }
 
-input GroupUpdateWithoutUsersDataInput {
-  name: String
-  parent: GroupUpdateOneInput
-  createAt: DateTime
-  intro: String
+input GroupUpdateOneWithoutUsersInput {
+  create: GroupCreateWithoutUsersInput
+  update: GroupUpdateWithoutUsersDataInput
+  upsert: GroupUpsertWithoutUsersInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: GroupWhereUniqueInput
 }
 
-input GroupUpdateWithWhereUniqueWithoutUsersInput {
-  where: GroupWhereUniqueInput!
-  data: GroupUpdateWithoutUsersDataInput!
+input GroupUpdateWithoutUsersDataInput {
+  name: String
+  email: String
+  createAt: DateTime
+  parent: GroupUpdateOneInput
+  intro: String
 }
 
 input GroupUpsertNestedInput {
@@ -236,8 +172,7 @@ input GroupUpsertNestedInput {
   create: GroupCreateInput!
 }
 
-input GroupUpsertWithWhereUniqueWithoutUsersInput {
-  where: GroupWhereUniqueInput!
+input GroupUpsertWithoutUsersInput {
   update: GroupUpdateWithoutUsersDataInput!
   create: GroupCreateWithoutUsersInput!
 }
@@ -271,7 +206,20 @@ input GroupWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
-  parent: GroupWhereInput
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
   createAt: DateTime
   createAt_not: DateTime
   createAt_in: [DateTime!]
@@ -280,6 +228,7 @@ input GroupWhereInput {
   createAt_lte: DateTime
   createAt_gt: DateTime
   createAt_gte: DateTime
+  parent: GroupWhereInput
   intro: String
   intro_not: String
   intro_in: [String!]
@@ -305,6 +254,7 @@ input GroupWhereInput {
 input GroupWhereUniqueInput {
   id: ID
   name: String
+  email: String
 }
 
 enum ItemType {
@@ -961,7 +911,7 @@ type User {
   birthday: DateTime
   sex: Int!
   role: UserRole!
-  group(where: GroupWhereInput, orderBy: GroupOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Group!]
+  group: Group
 }
 
 type UserConnection {
@@ -980,7 +930,7 @@ input UserCreateInput {
   birthday: DateTime
   sex: Int
   role: UserRole
-  group: GroupCreateManyWithoutUsersInput
+  group: GroupCreateOneWithoutUsersInput
 }
 
 input UserCreateManyWithoutGroupInput {
@@ -1203,7 +1153,7 @@ input UserUpdateDataInput {
   birthday: DateTime
   sex: Int
   role: UserRole
-  group: GroupUpdateManyWithoutUsersInput
+  group: GroupUpdateOneWithoutUsersInput
 }
 
 input UserUpdateInput {
@@ -1216,7 +1166,7 @@ input UserUpdateInput {
   birthday: DateTime
   sex: Int
   role: UserRole
-  group: GroupUpdateManyWithoutUsersInput
+  group: GroupUpdateOneWithoutUsersInput
 }
 
 input UserUpdateManyDataInput {
@@ -1407,9 +1357,7 @@ input UserWhereInput {
   role_not: UserRole
   role_in: [UserRole!]
   role_not_in: [UserRole!]
-  group_every: GroupWhereInput
-  group_some: GroupWhereInput
-  group_none: GroupWhereInput
+  group: GroupWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

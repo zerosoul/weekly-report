@@ -65,7 +65,7 @@ export default class User extends Component {
       key: 'opt',
       width: 200,
       render: (txt, record) => {
-        console.log('record', record);
+        // console.log('record', record);
         const { id } = record;
         return (
           <Button.Group size="small">
@@ -177,16 +177,16 @@ const USERS_QUERY = gql`
         id
         sex
         name
+        nickname
         intro
         role
         avatar
         email
         birthday
-        nickname
-        # group {
-        #   id
-        #   name
-        # }
+        group {
+          id
+          name
+        }
       }
       pageSize
       current

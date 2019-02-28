@@ -284,6 +284,8 @@ export type GroupOrderByInput =
   | "id_DESC"
   | "name_ASC"
   | "name_DESC"
+  | "email_ASC"
+  | "email_DESC"
   | "createAt_ASC"
   | "createAt_DESC"
   | "intro_ASC"
@@ -346,6 +348,7 @@ export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 export type GroupWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
   name?: String;
+  email?: String;
 }>;
 
 export interface UserWhereInput {
@@ -461,9 +464,7 @@ export interface UserWhereInput {
   role_not?: UserRole;
   role_in?: UserRole[] | UserRole;
   role_not_in?: UserRole[] | UserRole;
-  group_every?: GroupWhereInput;
-  group_some?: GroupWhereInput;
-  group_none?: GroupWhereInput;
+  group?: GroupWhereInput;
   AND?: UserWhereInput[] | UserWhereInput;
   OR?: UserWhereInput[] | UserWhereInput;
   NOT?: UserWhereInput[] | UserWhereInput;
@@ -498,7 +499,20 @@ export interface GroupWhereInput {
   name_not_starts_with?: String;
   name_ends_with?: String;
   name_not_ends_with?: String;
-  parent?: GroupWhereInput;
+  email?: String;
+  email_not?: String;
+  email_in?: String[] | String;
+  email_not_in?: String[] | String;
+  email_lt?: String;
+  email_lte?: String;
+  email_gt?: String;
+  email_gte?: String;
+  email_contains?: String;
+  email_not_contains?: String;
+  email_starts_with?: String;
+  email_not_starts_with?: String;
+  email_ends_with?: String;
+  email_not_ends_with?: String;
   createAt?: DateTimeInput;
   createAt_not?: DateTimeInput;
   createAt_in?: DateTimeInput[] | DateTimeInput;
@@ -507,6 +521,7 @@ export interface GroupWhereInput {
   createAt_lte?: DateTimeInput;
   createAt_gt?: DateTimeInput;
   createAt_gte?: DateTimeInput;
+  parent?: GroupWhereInput;
   intro?: String;
   intro_not?: String;
   intro_in?: String[] | String;
@@ -704,8 +719,9 @@ export type UserWhereUniqueInput = AtLeastOne<{
 
 export interface GroupCreateInput {
   name: String;
-  parent?: GroupCreateOneInput;
+  email?: String;
   createAt: DateTimeInput;
+  parent?: GroupCreateOneInput;
   intro?: String;
   users?: UserCreateManyWithoutGroupInput;
 }
@@ -734,8 +750,9 @@ export interface UserCreateWithoutGroupInput {
 
 export interface GroupUpdateInput {
   name?: String;
-  parent?: GroupUpdateOneInput;
+  email?: String;
   createAt?: DateTimeInput;
+  parent?: GroupUpdateOneInput;
   intro?: String;
   users?: UserUpdateManyWithoutGroupInput;
 }
@@ -751,8 +768,9 @@ export interface GroupUpdateOneInput {
 
 export interface GroupUpdateDataInput {
   name?: String;
-  parent?: GroupUpdateOneInput;
+  email?: String;
   createAt?: DateTimeInput;
+  parent?: GroupUpdateOneInput;
   intro?: String;
   users?: UserUpdateManyWithoutGroupInput;
 }
@@ -939,6 +957,7 @@ export interface GroupUpsertNestedInput {
 
 export interface GroupUpdateManyMutationInput {
   name?: String;
+  email?: String;
   createAt?: DateTimeInput;
   intro?: String;
 }
@@ -967,18 +986,19 @@ export interface UserCreateInput {
   birthday?: DateTimeInput;
   sex?: Int;
   role?: UserRole;
-  group?: GroupCreateManyWithoutUsersInput;
+  group?: GroupCreateOneWithoutUsersInput;
 }
 
-export interface GroupCreateManyWithoutUsersInput {
-  create?: GroupCreateWithoutUsersInput[] | GroupCreateWithoutUsersInput;
-  connect?: GroupWhereUniqueInput[] | GroupWhereUniqueInput;
+export interface GroupCreateOneWithoutUsersInput {
+  create?: GroupCreateWithoutUsersInput;
+  connect?: GroupWhereUniqueInput;
 }
 
 export interface GroupCreateWithoutUsersInput {
   name: String;
-  parent?: GroupCreateOneInput;
+  email?: String;
   createAt: DateTimeInput;
+  parent?: GroupCreateOneInput;
   intro?: String;
 }
 
@@ -1020,109 +1040,29 @@ export interface UserUpdateDataInput {
   birthday?: DateTimeInput;
   sex?: Int;
   role?: UserRole;
-  group?: GroupUpdateManyWithoutUsersInput;
+  group?: GroupUpdateOneWithoutUsersInput;
 }
 
-export interface GroupUpdateManyWithoutUsersInput {
-  create?: GroupCreateWithoutUsersInput[] | GroupCreateWithoutUsersInput;
-  delete?: GroupWhereUniqueInput[] | GroupWhereUniqueInput;
-  connect?: GroupWhereUniqueInput[] | GroupWhereUniqueInput;
-  disconnect?: GroupWhereUniqueInput[] | GroupWhereUniqueInput;
-  update?:
-    | GroupUpdateWithWhereUniqueWithoutUsersInput[]
-    | GroupUpdateWithWhereUniqueWithoutUsersInput;
-  upsert?:
-    | GroupUpsertWithWhereUniqueWithoutUsersInput[]
-    | GroupUpsertWithWhereUniqueWithoutUsersInput;
-  deleteMany?: GroupScalarWhereInput[] | GroupScalarWhereInput;
-  updateMany?:
-    | GroupUpdateManyWithWhereNestedInput[]
-    | GroupUpdateManyWithWhereNestedInput;
-}
-
-export interface GroupUpdateWithWhereUniqueWithoutUsersInput {
-  where: GroupWhereUniqueInput;
-  data: GroupUpdateWithoutUsersDataInput;
+export interface GroupUpdateOneWithoutUsersInput {
+  create?: GroupCreateWithoutUsersInput;
+  update?: GroupUpdateWithoutUsersDataInput;
+  upsert?: GroupUpsertWithoutUsersInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: GroupWhereUniqueInput;
 }
 
 export interface GroupUpdateWithoutUsersDataInput {
   name?: String;
-  parent?: GroupUpdateOneInput;
+  email?: String;
   createAt?: DateTimeInput;
+  parent?: GroupUpdateOneInput;
   intro?: String;
 }
 
-export interface GroupUpsertWithWhereUniqueWithoutUsersInput {
-  where: GroupWhereUniqueInput;
+export interface GroupUpsertWithoutUsersInput {
   update: GroupUpdateWithoutUsersDataInput;
   create: GroupCreateWithoutUsersInput;
-}
-
-export interface GroupScalarWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
-  createAt?: DateTimeInput;
-  createAt_not?: DateTimeInput;
-  createAt_in?: DateTimeInput[] | DateTimeInput;
-  createAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createAt_lt?: DateTimeInput;
-  createAt_lte?: DateTimeInput;
-  createAt_gt?: DateTimeInput;
-  createAt_gte?: DateTimeInput;
-  intro?: String;
-  intro_not?: String;
-  intro_in?: String[] | String;
-  intro_not_in?: String[] | String;
-  intro_lt?: String;
-  intro_lte?: String;
-  intro_gt?: String;
-  intro_gte?: String;
-  intro_contains?: String;
-  intro_not_contains?: String;
-  intro_starts_with?: String;
-  intro_not_starts_with?: String;
-  intro_ends_with?: String;
-  intro_not_ends_with?: String;
-  AND?: GroupScalarWhereInput[] | GroupScalarWhereInput;
-  OR?: GroupScalarWhereInput[] | GroupScalarWhereInput;
-  NOT?: GroupScalarWhereInput[] | GroupScalarWhereInput;
-}
-
-export interface GroupUpdateManyWithWhereNestedInput {
-  where: GroupScalarWhereInput;
-  data: GroupUpdateManyDataInput;
-}
-
-export interface GroupUpdateManyDataInput {
-  name?: String;
-  createAt?: DateTimeInput;
-  intro?: String;
 }
 
 export interface UserUpsertNestedInput {
@@ -1319,7 +1259,7 @@ export interface UserUpdateInput {
   birthday?: DateTimeInput;
   sex?: Int;
   role?: UserRole;
-  group?: GroupUpdateManyWithoutUsersInput;
+  group?: GroupUpdateOneWithoutUsersInput;
 }
 
 export interface UserUpdateManyMutationInput {
@@ -1396,6 +1336,7 @@ export interface NodeNode {
 export interface Group {
   id: ID_Output;
   name: String;
+  email?: String;
   createAt: DateTimeOutput;
   intro?: String;
 }
@@ -1403,8 +1344,9 @@ export interface Group {
 export interface GroupPromise extends Promise<Group>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
-  parent: <T = GroupPromise>() => T;
+  email: () => Promise<String>;
   createAt: () => Promise<DateTimeOutput>;
+  parent: <T = GroupPromise>() => T;
   intro: () => Promise<String>;
   users: <T = FragmentableArray<User>>(args?: {
     where?: UserWhereInput;
@@ -1422,8 +1364,9 @@ export interface GroupSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
-  parent: <T = GroupSubscription>() => T;
+  email: () => Promise<AsyncIterator<String>>;
   createAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  parent: <T = GroupSubscription>() => T;
   intro: () => Promise<AsyncIterator<String>>;
   users: <T = Promise<AsyncIterator<UserSubscription>>>(args?: {
     where?: UserWhereInput;
@@ -1460,15 +1403,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   birthday: () => Promise<DateTimeOutput>;
   sex: () => Promise<Int>;
   role: () => Promise<UserRole>;
-  group: <T = FragmentableArray<Group>>(args?: {
-    where?: GroupWhereInput;
-    orderBy?: GroupOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  group: <T = GroupPromise>() => T;
 }
 
 export interface UserSubscription
@@ -1484,15 +1419,7 @@ export interface UserSubscription
   birthday: () => Promise<AsyncIterator<DateTimeOutput>>;
   sex: () => Promise<AsyncIterator<Int>>;
   role: () => Promise<AsyncIterator<UserRole>>;
-  group: <T = Promise<AsyncIterator<GroupSubscription>>>(args?: {
-    where?: GroupWhereInput;
-    orderBy?: GroupOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  group: <T = GroupSubscription>() => T;
 }
 
 export interface GroupConnection {}
@@ -1910,6 +1837,7 @@ export interface GroupSubscriptionPayloadSubscription
 export interface GroupPreviousValues {
   id: ID_Output;
   name: String;
+  email?: String;
   createAt: DateTimeOutput;
   intro?: String;
 }
@@ -1919,6 +1847,7 @@ export interface GroupPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
+  email: () => Promise<String>;
   createAt: () => Promise<DateTimeOutput>;
   intro: () => Promise<String>;
 }
@@ -1928,6 +1857,7 @@ export interface GroupPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
   createAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   intro: () => Promise<AsyncIterator<String>>;
 }

@@ -1,4 +1,5 @@
 type Query {
+  group(id: ID, name: String, email: String): Group!
   userList(skip: Int, first: Int, filter: UserFilterInput, orderBy: String): UserList!
   groupList(skip: Int, first: Int, filter: GroupFilterInput, orderBy: String): GroupList!
 }
@@ -34,12 +35,13 @@ input UserInput {
   intro: String
   birthday: String
   sex: Int
+  group: ID
 }
 # 组输入项
 input GroupInput {
   id: ID
-  name: String!
-  createAt: String
+  name: String
+  email: String
   intro: String
   # users: [User!]
 }
@@ -57,20 +59,21 @@ input GroupFilterInput {
 type User {
   id: ID!
   createAt: String!
+  email: String!
   name: String!
   nickname: String
   avatar: String
-  email: String!
   intro: String
   birthday: String
   sex: Int!
   role: UserRole!
-  group: [Group!]!
+  group: Group
 }
 # 分组
 type Group {
   id: ID!
   createAt: String!
+  email: String
   name: String!
   parent: Group
   intro: String
