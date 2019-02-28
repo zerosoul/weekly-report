@@ -40,12 +40,12 @@ export default class Group extends Component {
       //   );
       // }
     },
-    // {
-    //   title: '邮箱',
-    //   dataIndex: 'email',
-    //   key: 'email',
-    //   width: 400
-    // },
+    {
+      title: '简介',
+      dataIndex: 'intro',
+      key: 'intro',
+      width: 400
+    },
     // {
     //   title: '角色',
     //   dataIndex: 'role',

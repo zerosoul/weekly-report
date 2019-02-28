@@ -1,30 +1,38 @@
 mutation {
-  post1: createPost(
+  user1: createUser(
     data: {
-      title: "Join us for GraphQL Conf 2019 in Berlin"
-      content: "https://www.graphqlconf.org/"
-      published: true
+      name: "杨国春"
+      createAt: "2019-02-02"
+      email: "yangguochun@ddweilai.com"
+      nickname: "杨二小"
+      role: ADMIN
+      birthday: "1989-03-22"
     }
   ) {
     id
   }
 
-  post2: createPost(
+  user2: createUser(
     data: {
-      title: "Subscribe to GraphQL Weekly for community news"
-      content: "https://graphqlweekly.com/"
-      published: true
+      name: "赵帅"
+      createAt: "2019-02-02"
+      email: "zhaoshuai@ddweilai.com"
+      nickname: "帅哥"
+      role: STAFF
+      birthday: "1991-03-22"
     }
   ) {
     id
   }
-
-  post3: createPost(
-    data: {
-      title: "Follow Prisma on Twitter"
-      content: "https://twitter.com/prisma"
-    }
+  group1: createGroup(
+    data: { createAt: "2019-02-02", name: "产品技术部", intro: "壹点壹滴发动机！" }
   ) {
+    id
+  }
+  group2: createGroup(data: { createAt: "2019-02-02", name: "督导部", intro: "帅哥美女团" }) {
+    id
+  }
+  group3: createGroup(data: { createAt: "2019-02-02", name: "客服部", intro: "微笑服务" }) {
     id
   }
 }

@@ -45,8 +45,7 @@ class GroupEditModal extends Component {
       form: { getFieldDecorator }
     } = this.props;
     console.log('item data', data);
-    const { name = '', nickname = '', birthday, intro = '', sex = 1, role = 'STAFF', email } =
-      data || {};
+    const { name = '', intro } = data || {};
     return (
       <Modal
         style={{ top: 10 }}
@@ -111,7 +110,7 @@ class GroupEditModal extends Component {
                     <Item label="简介" {...ColLayout}>
                       {getFieldDecorator('intro', {
                         initialValue: intro
-                      })(<Input.TextArea placeholder="自我介绍" />)}
+                      })(<Input.TextArea placeholder="组简介" />)}
                     </Item>
                   </Col>
                 </Row>
