@@ -10,14 +10,15 @@ type User {
   birthday: DateTime
   sex: Int! @default(value: 1) #1男 2女
   role: UserRole! @default(value: STAFF)
-  group: [Group!]! @default(value: [])
+  group: Group
 }
 #分组
 type Group {
   id: ID! @unique
   name: String! @unique
-  parent: Group
+  email: String @unique
   createAt: DateTime!
+  parent: Group
   intro: String
   users: [User!]!
 }
