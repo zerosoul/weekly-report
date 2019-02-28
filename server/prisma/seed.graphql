@@ -24,6 +24,109 @@ mutation {
   ) {
     id
   }
+
+  user3: createUser(
+    data: {
+      name: "贾明"
+      createAt: "2019-02-22"
+      email: "jiaming@ddweilai.com"
+      nickname: "贾先生"
+      role: STAFF
+      birthday: "1993-03-22"
+    }
+  ) {
+    id
+  }
+
+  user4: createUser(
+    data: {
+      name: "吴彦红"
+      createAt: "2019-02-24"
+      email: "wuyanhong@ddweilai.com"
+      nickname: "吴彦祖第二"
+      role: STAFF
+      birthday: "1993-05-22"
+    }
+  ) {
+    id
+  }
+
+  user5: createUser(
+    data: {
+      name: "庄彬彬"
+      createAt: "2019-02-25"
+      email: "zhuangbinbin@ddweilai.com"
+      nickname: "庄子"
+      role: STAFF
+      birthday: "1992-03-22"
+    }
+  ) {
+    id
+  }
+
+  user6: createUser(
+    data: {
+      name: "吕少楠"
+      createAt: "2019-01-02"
+      email: "lvshaonan@ddweilai.com"
+      nickname: "吕秀才"
+      role: STAFF
+      birthday: "1989-03-22"
+    }
+  ) {
+    id
+  }
+
+  user7: createUser(
+    data: {
+      name: "王二旭"
+      createAt: "2019-02-11"
+      email: "wangerxu@ddweilai.com"
+      nickname: "王二"
+      role: STAFF
+      birthday: "1990-03-22"
+    }
+  ) {
+    id
+  }
+
+  user8: createUser(
+    data: {
+      name: "杨慧超"
+      createAt: "2019-02-02"
+      email: "yanghuichao@ddweilai.com"
+      nickname: "帅哥"
+      role: MANAGER
+      birthday: "1989-03-22"
+    }
+  ) {
+    id
+  }
+  user81: createUser(
+    data: {
+      name: "陈龙龙"
+      createAt: "2019-02-27"
+      email: "chenlonglong@ddweilai.com"
+      nickname: "龙哥"
+      role: MANAGER
+      birthday: "1989-03-22"
+    }
+  ) {
+    id
+  }
+
+  user9: createUser(
+    data: {
+      name: "代启蒙"
+      createAt: "2019-02-02"
+      email: "daiqimeng@ddweilai.com"
+      nickname: "萌萌"
+      role: LEADER
+      birthday: "1988-03-22"
+    }
+  ) {
+    id
+  }
   group1: createGroup(
     data: { createAt: "2019-02-02", name: "产品技术部", intro: "壹点壹滴发动机！" }
   ) {
@@ -33,6 +136,21 @@ mutation {
     id
   }
   group3: createGroup(data: { createAt: "2019-02-02", name: "客服部", intro: "微笑服务" }) {
+    id
+  }
+  group4: createGroup(
+    data: { createAt: "2019-02-21", name: "财务部", intro: "最有钱的一个部门吧" }
+  ) {
+    id
+  }
+  group5: createGroup(
+    data: { createAt: "2019-02-02", name: "内容运营部", intro: "找素材，蹭热点，我最拿手！" }
+  ) {
+    id
+  }
+  group6: createGroup(
+    data: { createAt: "2019-02-02", name: "行政部", intro: "招人，培训人，管理人，以人为本！" }
+  ) {
     id
   }
 }
