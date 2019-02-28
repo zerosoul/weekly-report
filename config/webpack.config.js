@@ -374,16 +374,26 @@ module.exports = function(webpackEnv) {
               // See https://github.com/webpack/webpack/issues/6571
               sideEffects: true
             },
-            // Adds support for CSS Modules (https://github.com/css-modules/css-modules)
-            // using the extension .module.css
+
+            // less loader
             {
-              test: cssModuleRegex,
-              use: getStyleLoaders({
-                importLoaders: 1,
-                sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
-                modules: true,
-                getLocalIdent: getCSSModuleLocalIdent
-              })
+              test: /\.less$/,
+              use: [
+                'style-loader',
+                'css-loader',
+                {
+                  loader: 'less-loader',
+                  options: {
+                    javascriptEnabled: true,
+                    modifyVars: {
+                      '@primary-color': '#4b98fc',
+                      '@warning-color': '#fa9848',
+                      '@error-color': '#fc5c64',
+                      '@success-color': '#35d78e'
+                    }
+                  }
+                }
+              ]
             },
             // "file" loader makes sure those assets get served by WebpackDevServer.
             // When you `import` an asset, you get its (virtual) filename.

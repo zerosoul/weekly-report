@@ -48,6 +48,8 @@
     "antd": "^3.13.6",
     "apollo-boost": "0.1.28",
     "graphql": "^14.1.1",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
     "moment": "^2.24.0",
     "postcss-flexbugs-fixes": "4.1.0",
     "postcss-preset-env": "6.5.0",
