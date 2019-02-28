@@ -19,6 +19,27 @@ const userList = async (parent, args, ctx, info) => {
     .count();
   return { users, total, pageSize: first, current: skip / first + 1 };
 };
+const groupList = async (parent, args, ctx, info) => {
+  // 指定默认值
+  const { filter, skip = 0, first = PAGE_SIZE, orderBy = 'createdAt_ASC' } = args;
+  console.log('groups query args', args);
+  // console.log('groups query info', info);
+
+  const where = filter
+    ? {
+        AND: filter
+      }
+    : {};
+  const groups = await ctx.prisma.groups({ where, skip, first, orderBy });
+  console.log('groups', groups);
+
+  const total = await ctx.prisma
+    .groupsConnection({ where })
+    .aggregate()
+    .count();
+  return { groups, total, pageSize: first, current: skip / first + 1 };
+};
 module.exports = {
-  userList
+  userList,
+  groupList
 };

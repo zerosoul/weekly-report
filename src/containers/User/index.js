@@ -79,6 +79,9 @@ export default class User extends Component {
             </Button>
             <Mutation mutation={REMOVE_USER}>
               {(removeUser, { data, error }) => {
+                if (error) {
+                  return message.error('操作失败');
+                }
                 return (
                   <Popconfirm
                     title="确定要删除吗?"
@@ -180,6 +183,10 @@ const USERS_QUERY = gql`
         email
         birthday
         nickname
+        # group {
+        #   id
+        #   name
+        # }
       }
       pageSize
       current

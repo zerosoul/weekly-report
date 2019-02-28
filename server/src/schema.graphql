@@ -1,5 +1,6 @@
 type Query {
   userList(skip: Int, first: Int, filter: UserFilterInput, orderBy: String): UserList!
+  groupList(skip: Int, first: Int, filter: GroupFilterInput, orderBy: String): GroupList!
 }
 # 带分页的用户列表
 type UserList {
@@ -8,10 +9,20 @@ type UserList {
   current: Int!
   total: Int!
 }
+# 带分页的组列表
+type GroupList {
+  groups: [Group!]!
+  pageSize: Int!
+  current: Int!
+  total: Int!
+}
 type Mutation {
   upsertUser(data: UserInput!): User!
+  upsertGroup(data: GroupInput!): Group!
+  removeGroup(id: ID!): Boolean!
   removeUser(id: ID!): Boolean!
 }
+# 用户输入项
 input UserInput {
   id: ID
   email: String!
@@ -24,10 +35,23 @@ input UserInput {
   birthday: String
   sex: Int
 }
+# 组输入项
+input GroupInput {
+  id: ID
+  name: String!
+  createAt: String
+  intro: String
+  # users: [User!]
+}
+# 用户过滤项
 input UserFilterInput {
   name_contains: String
   nickname_contains: String
   email_contains: String
+}
+# 组过滤项
+input GroupFilterInput {
+  name_contains: String
 }
 # 用户
 type User {
@@ -46,9 +70,9 @@ type User {
 # 分组
 type Group {
   id: ID!
-  parent: Group
   createAt: String!
   name: String!
+  parent: Group
   intro: String
   users: [User!]!
 }

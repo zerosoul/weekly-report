@@ -1,7 +1,32 @@
 import React, { Component } from 'react';
-import { Modal, Form, Row, Col, Input } from 'antd';
-const { Item } = Form;
+import {
+  Modal,
+  Form,
+  Row,
+  Col,
+  Input,
+  Divider,
+  Button,
+  Skeleton,
+  Select,
+  DatePicker,
+  message
+} from 'antd';
+import { Mutation } from 'react-apollo';
+import { gql } from 'apollo-boost';
 
+const { Item } = Form;
+const { Option } = Select;
+import { ROLES } from '../../config/const';
+import moment from 'moment';
+const UPSERT_GROUP = gql`
+  mutation UpsertGroup($data: GroupInput!) {
+    upsertGroup(data: $data) {
+      id
+      name
+    }
+  }
+`;
 const ColLayout = {
   labelCol: {
     span: 6
@@ -13,69 +38,99 @@ const ColLayout = {
 
 // 包含新增和编辑
 class GroupEditModal extends Component {
-  onSubmit = () => {
-    // console.log('values', values);
-    const { form, onClickEditBtn, data, onCloseEdit } = this.props;
-    form.validateFields((error, values) => {
-      if (!error) {
-        //   编辑
-        if (data) {
-          values.id = data.id;
-        }
-        onClickEditBtn(values);
-        onCloseEdit();
-      }
-    });
-  };
-
   render() {
     const {
       data,
-      onCloseEdit,
+      onCloseEditModal,
       form: { getFieldDecorator }
     } = this.props;
     console.log('item data', data);
-    const { name = '', intro = '', parent = {} } = data || {};
+    const { name = '', nickname = '', birthday, intro = '', sex = 1, role = 'STAFF', email } =
+      data || {};
     return (
       <Modal
         style={{ top: 10 }}
         title={data ? `编辑` : `新增`}
         maskClosable={false}
         visible={true}
-        onCancel={onCloseEdit}
-        onOk={this.onSubmit}
+        onCancel={() => {
+          console.log('refresh is');
+
+          onCloseEditModal(false);
+        }}
+        footer={false}
       >
-        <Form autoComplete="disabled">
-          <Row>
-            <Col span={24}>
-              <Item label="名称" {...ColLayout}>
-                {getFieldDecorator('name', {
-                  initialValue: name,
-                  rules: [
-                    {
-                      required: true,
-                      message: '名称不能为空'
+        <Mutation mutation={UPSERT_GROUP}>
+          {(upsertGroup, { data, error, loading }) => {
+            if (loading) {
+              return <Skeleton active />;
+            }
+            if (error) {
+              return <div>出错啦！</div>;
+            }
+            return (
+              <Form
+                autoComplete="disabled"
+                onSubmit={evt => {
+                  evt.preventDefault();
+                  const { form, data: currGroup, onCloseEditModal } = this.props;
+                  form.validateFields(async (error, values) => {
+                    if (!error) {
+                      console.log('data form', values);
+                      //   编辑
+                      if (currGroup) {
+                        values.id = currGroup.id;
+                      }
+
+                      await upsertGroup({ variables: { data: values } });
+                      console.log('curr group', currGroup);
+
+                      message.success(currGroup ? '更新成功！' : '新建成功！');
+
+                      onCloseEditModal();
                     }
-                  ]
-                })(<Input.TextArea placeholder="工作内容" />)}
-              </Item>
-            </Col>
-            <Col span={24}>
-              <Item label="简介" {...ColLayout}>
-                {getFieldDecorator('intro', {
-                  initialValue: intro
-                })(<Input style={{ width: 80 }} placeholder="组简介" />)}
-              </Item>
-            </Col>
-            {/* <Col span={24}>
-              <Item label="备注" {...ColLayout}>
-                {getFieldDecorator('remark', {
-                  initialValue: remark
-                })(<Input.TextArea placeholder="备注" />)}
-              </Item>
-            </Col> */}
-          </Row>
-        </Form>
+                  });
+                }}
+              >
+                <Row>
+                  <Col span={12}>
+                    <Item label="名称" {...ColLayout}>
+                      {getFieldDecorator('name', {
+                        initialValue: name,
+                        rules: [
+                          {
+                            required: true,
+                            message: '名称不能为空'
+                          }
+                        ]
+                      })(<Input placeholder="名称" />)}
+                    </Item>
+                  </Col>
+
+                  <Col span={12}>
+                    <Item label="简介" {...ColLayout}>
+                      {getFieldDecorator('intro', {
+                        initialValue: intro
+                      })(<Input.TextArea placeholder="自我介绍" />)}
+                    </Item>
+                  </Col>
+                </Row>
+                <Divider />
+                <Button loading={loading} type="primary" htmlType="submit">
+                  确定
+                </Button>
+                <Divider type="vertical" />
+                <Button
+                  onClick={() => {
+                    onCloseEditModal(false);
+                  }}
+                >
+                  取消
+                </Button>
+              </Form>
+            );
+          }}
+        </Mutation>
       </Modal>
     );
   }
