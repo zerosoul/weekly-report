@@ -7,7 +7,6 @@ import GroupEditModal from './GroupEditModal';
 import FilterForm from './FilterForm';
 // import GroupTable from './GroupTable';
 import QueryTable from '../../components/QueryTable';
-import { ROLES } from '../../config/const';
 
 export default class Group extends Component {
   state = {
@@ -17,28 +16,16 @@ export default class Group extends Component {
     currGroup: null
   };
   Cols = [
-    {
-      title: 'ID',
-      dataIndex: 'id',
-      key: 'id',
-      width: 50
-    },
+    // {
+    //   title: 'ID',
+    //   dataIndex: 'id',
+    //   key: 'id',
+    //   width: 50
+    // },
     {
       title: '名称',
       dataIndex: 'name',
       key: 'name'
-      // render: (val, record) => {
-      //   return (
-      //     <>
-      //       <Tag color="pink">{val}</Tag>
-      //       <Divider type="vertical" />
-      //       <Tag>{record.nickname ? `${record.nickname}` : '暂无'}</Tag>
-      //       <Divider type="vertical" />
-
-      //       <Tag>{record.sex == 1 ? `男` : `女`}</Tag>
-      //     </>
-      //   );
-      // }
     },
     {
       title: '简介',
@@ -46,19 +33,6 @@ export default class Group extends Component {
       key: 'intro',
       width: 400
     },
-    // {
-    //   title: '角色',
-    //   dataIndex: 'role',
-    //   key: 'role',
-    //   render: role => {
-    //     return ROLES[role] || '暂无角色';
-    //   }
-    // },
-    // {
-    //   title: '头像',
-    //   dataIndex: 'avatar',
-    //   key: 'avatar'
-    // },
     {
       title: '操作',
       dataIndex: 'opt',

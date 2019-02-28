@@ -17,12 +17,12 @@ export default class User extends Component {
     currUser: null
   };
   Cols = [
-    {
-      title: 'ID',
-      dataIndex: 'id',
-      key: 'id',
-      width: 50
-    },
+    // {
+    //   title: 'ID',
+    //   dataIndex: 'id',
+    //   key: 'id',
+    //   width: 50
+    // },
     {
       title: '姓名/昵称/性别',
       dataIndex: 'name',
