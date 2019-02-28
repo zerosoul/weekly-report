@@ -1,4 +1,44 @@
 mutation {
+  # 部门数据
+  group1: createGroup(
+    data: {
+      createAt: "2019-02-02"
+      email: "jishu@ddweilai.com"
+      name: "产品技术部"
+      intro: "壹点壹滴发动机！"
+    }
+  ) {
+    id
+  }
+  group2: createGroup(
+    data: {
+      createAt: "2019-02-02"
+      email: "dudao@ddweilai.com"
+      name: "督导部"
+      intro: "帅哥美女团"
+    }
+  ) {
+    id
+  }
+  group3: createGroup(data: { createAt: "2019-02-02", name: "客服部", intro: "微笑服务" }) {
+    id
+  }
+  group4: createGroup(
+    data: { createAt: "2019-02-21", name: "财务部", intro: "最有钱的一个部门吧" }
+  ) {
+    id
+  }
+  group5: createGroup(
+    data: { createAt: "2019-02-02", name: "内容运营部", intro: "找素材，蹭热点，我最拿手！" }
+  ) {
+    id
+  }
+  group6: createGroup(
+    data: { createAt: "2019-02-02", name: "行政部", intro: "招人，培训人，管理人，以人为本！" }
+  ) {
+    id
+  }
+  # 用户数据
   user1: createUser(
     data: {
       name: "杨国春"
@@ -6,6 +46,7 @@ mutation {
       email: "yangguochun@ddweilai.com"
       nickname: "杨二小"
       role: ADMIN
+      group: { connect: { email: "jishu@ddweilai.com" } }
       birthday: "1989-03-22"
     }
   ) {
@@ -127,29 +168,39 @@ mutation {
   ) {
     id
   }
-  group1: createGroup(
-    data: { createAt: "2019-02-02", name: "产品技术部", intro: "壹点壹滴发动机！" }
+  user10: createUser(
+    data: {
+      name: "莫翔宇"
+      createAt: "2019-02-28"
+      email: "moxiangyu@ddweilai.com"
+      nickname: "美少男"
+      role: STAFF
+      birthday: "1993-03-22"
+    }
   ) {
     id
   }
-  group2: createGroup(data: { createAt: "2019-02-02", name: "督导部", intro: "帅哥美女团" }) {
-    id
-  }
-  group3: createGroup(data: { createAt: "2019-02-02", name: "客服部", intro: "微笑服务" }) {
-    id
-  }
-  group4: createGroup(
-    data: { createAt: "2019-02-21", name: "财务部", intro: "最有钱的一个部门吧" }
+  user11: createUser(
+    data: {
+      name: "丁配龙"
+      createAt: "2019-02-12"
+      email: "dingpeilong@ddweilai.com"
+      nickname: "龙龙"
+      role: MANAGER
+      birthday: "1989-01-22"
+    }
   ) {
     id
   }
-  group5: createGroup(
-    data: { createAt: "2019-02-02", name: "内容运营部", intro: "找素材，蹭热点，我最拿手！" }
-  ) {
-    id
-  }
-  group6: createGroup(
-    data: { createAt: "2019-02-02", name: "行政部", intro: "招人，培训人，管理人，以人为本！" }
+  user12: createUser(
+    data: {
+      name: "谷东坤"
+      createAt: "2019-02-02"
+      email: "gudongkun@ddweilai.com"
+      nickname: "大股东"
+      role: STAFF
+      birthday: "1992-03-22"
+    }
   ) {
     id
   }
