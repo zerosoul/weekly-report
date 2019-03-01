@@ -41,7 +41,7 @@ export default class Report extends Component {
     todos: []
   };
   componentDidMount() {
-    console.log('this.props', this.props);
+    console.log('this.props', this.props.match);
     const { id } = this.props.match.params;
     if (+id) {
       console.log('更新');

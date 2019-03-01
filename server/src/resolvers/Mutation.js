@@ -15,10 +15,10 @@ const upsertUser = async (parent, args, ctx, info) => {
   if (id) {
     console.log('update user', id, rest);
 
-    user = await ctx.prisma.updateUser({ data: rest, where: { id } });
+    user = await ctx.prisma.updateUser({ data: rest, where: { id } }, info);
   } else {
     console.log('new user', rest);
-    user = await ctx.prisma.createUser({ ...rest, createAt: new Date() });
+    user = await ctx.prisma.createUser({ ...rest, createAt: new Date() }, info);
   }
   // const user = await ctx.prisma.upsertUser({
   //   where: {
@@ -58,6 +58,23 @@ const upsertGroup = async (parent, args, ctx, info) => {
   });
   return group;
 };
+const upsertReport = async (parent, args, ctx, info) => {
+  console.log('UPSERT report data', args);
+  const { id = '', ...rest } = args.data;
+  const report = await ctx.prisma.upsertReport({
+    where: {
+      id
+    },
+    update: {
+      ...rest
+    },
+    create: {
+      ...rest,
+      createAt: new Date()
+    }
+  });
+  return report;
+};
 const removeGroup = async (parent, args, ctx) => {
   const { id } = args;
   const deletedGroup = await ctx.prisma.deleteGroup({
@@ -65,4 +82,4 @@ const removeGroup = async (parent, args, ctx) => {
   });
   return !!deletedGroup;
 };
-module.exports = { upsertUser, removeUser, upsertGroup, removeGroup };
+module.exports = { upsertUser, removeUser, upsertGroup, removeGroup, upsertReport };
