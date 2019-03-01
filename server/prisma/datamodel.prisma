@@ -26,11 +26,15 @@ type Group {
 type Report {
   id: ID! @unique
   title: String!
-  status: ReportStatus!
-  startTime: DateTime!
-  endTime: DateTime!
-  reportBy: User!
+  status: ReportStatus! @default(value: UNSEND)
+  range: TimeRange!
+  sendBy: User!
   items: [ReportItem!]!
+}
+#时间区间
+type TimeRange {
+  start: DateTime!
+  end: DateTime!
 }
 # 周报每一项
 type ReportItem {
