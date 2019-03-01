@@ -102,7 +102,6 @@ export default class Report extends Component {
           <ReportTable data={dones} onOpenEditModal={this.onOpenEditModal} />
           <AddItem onOpenEditModal={this.onOpenEditModal} />
         </TableWrapper>
-        <Divider />
         <TableWrapper>
           <ReportTitle>👇下周准备做啥👇</ReportTitle>
 
