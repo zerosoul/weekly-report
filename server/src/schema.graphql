@@ -1,11 +1,29 @@
+# 分组
+type Group {
+  id: ID!
+  createAt: String!
+  email: String
+  name: String!
+  parent: Group
+  intro: String
+  users: [User!]!
+}
 type Query {
   group(id: ID, name: String, email: String): Group!
   userList(skip: Int, first: Int, filter: UserFilterInput, orderBy: String): UserList!
+  reportList(skip: Int, first: Int, filter: ReportFilterInput, orderBy: String): ReportList!
   groupList(skip: Int, first: Int, filter: GroupFilterInput, orderBy: String): GroupList!
 }
 # 带分页的用户列表
 type UserList {
   users: [User!]!
+  pageSize: Int!
+  current: Int!
+  total: Int!
+}
+# 带分页的周报列表
+type ReportList {
+  reports: [Report!]!
   pageSize: Int!
   current: Int!
   total: Int!
@@ -22,6 +40,11 @@ type Mutation {
   upsertGroup(data: GroupInput!): Group!
   removeGroup(id: ID!): Boolean!
   removeUser(id: ID!): Boolean!
+}
+# 周报输入项
+input ReportFilterInput {
+  id: ID
+  title: String
 }
 # 用户输入项
 input UserInput {
@@ -55,6 +78,7 @@ input UserFilterInput {
 input GroupFilterInput {
   name_contains: String
 }
+
 # 用户
 type User {
   id: ID!
@@ -68,16 +92,6 @@ type User {
   sex: Int!
   role: UserRole!
   group: Group
-}
-# 分组
-type Group {
-  id: ID!
-  createAt: String!
-  email: String
-  name: String!
-  parent: Group
-  intro: String
-  users: [User!]!
 }
 # 周报
 type Report {
