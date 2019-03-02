@@ -11,7 +11,7 @@ const userList = async (parent, args, ctx, info) => {
       }
     : {};
   const users = await ctx.prisma.users({ where, skip, first, orderBy }, info);
-  console.log('curr users', users);
+  console.log('curr users', users.edges);
 
   const total = await ctx.prisma
     .usersConnection({ where })
@@ -38,6 +38,15 @@ const reportList = async (parent, args, ctx, info) => {
     .aggregate()
     .count();
   return { reports, total, pageSize: first, current: skip / first + 1 };
+};
+//获取周报单条数据
+const report = async (parent, args, ctx, info) => {
+  console.log('report query args', args);
+
+  const report = await ctx.prisma.report({ ...args });
+  console.log('report', report);
+
+  return report;
 };
 //获取组织单条数据
 const group = async (parent, args, ctx, info) => {
@@ -73,5 +82,6 @@ module.exports = {
   group,
   userList,
   groupList,
-  reportList
+  reportList,
+  report
 };

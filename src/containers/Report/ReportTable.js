@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Table, Button } from 'antd';
+import { Table, Button, message, Popconfirm } from 'antd';
+import { gql } from 'apollo-boost';
+import { Mutation } from 'react-apollo';
 
 export default class ReportTable extends Component {
   Cols = [
@@ -37,9 +39,42 @@ export default class ReportTable extends Component {
                 this.props.onOpenEditModal(id);
               }}
             >
-              编辑
+              更新
             </Button>
-            <Button type="danger">删除</Button>
+            <Mutation mutation={REMOVE_REPORT_ITEM}>
+              {(removeReportItem, { data, error }) => {
+                if (error) {
+                  return message.error('操作失败');
+                }
+                return (
+                  <Popconfirm
+                    title="确定要删除吗?"
+                    onConfirm={async () => {
+                      const result = await removeReportItem({ variables: { id } });
+                      const { isRemoved } = result.data;
+                      if (isRemoved) {
+                        message.success('删除成功！');
+                        this.setState(
+                          {
+                            refetch: true
+                          },
+                          () => {
+                            this.setState({
+                              refetch: false
+                            });
+                          }
+                        );
+                      } else {
+                        message.error('删除失败！');
+                      }
+                      console.log('apollo client', result);
+                    }}
+                  >
+                    <Button type="danger">删除</Button>
+                  </Popconfirm>
+                );
+              }}
+            </Mutation>
           </Button.Group>
         );
       }
@@ -63,3 +98,8 @@ export default class ReportTable extends Component {
     );
   }
 }
+const REMOVE_REPORT_ITEM = gql`
+  mutation RemoveReportItem($id: ID!) {
+    isRemoved: removeReportItem(id: $id)
+  }
+`;

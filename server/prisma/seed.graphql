@@ -136,7 +136,7 @@ mutation {
       name: "杨慧超"
       createAt: "2019-02-02"
       email: "yanghuichao@ddweilai.com"
-      nickname: "帅哥"
+      nickname: "超哥"
       role: MANAGER
       birthday: "1989-03-22"
     }

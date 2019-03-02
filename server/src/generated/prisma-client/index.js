@@ -5,11 +5,11 @@ var typeDefs = require("./prisma-schema").typeDefs;
 
 var models = [
   {
-    name: "Group",
+    name: "User",
     embedded: false
   },
   {
-    name: "ItemType",
+    name: "Group",
     embedded: false
   },
   {
@@ -17,11 +17,11 @@ var models = [
     embedded: false
   },
   {
-    name: "ReportItem",
+    name: "TimeRange",
     embedded: false
   },
   {
-    name: "ReportStatus",
+    name: "ReportItem",
     embedded: false
   },
   {
@@ -29,7 +29,15 @@ var models = [
     embedded: false
   },
   {
-    name: "User",
+    name: "EEE",
+    embedded: false
+  },
+  {
+    name: "ReportStatus",
+    embedded: false
+  },
+  {
+    name: "ItemType",
     embedded: false
   },
   {
@@ -43,37 +51,3 @@ exports.Prisma = prisma_lib_1.makePrismaClientClass({
   endpoint: `http://localhost:4466`
 });
 exports.prisma = new exports.Prisma();
-var models = [
-  {
-    name: "Group",
-    embedded: false
-  },
-  {
-    name: "ItemType",
-    embedded: false
-  },
-  {
-    name: "Report",
-    embedded: false
-  },
-  {
-    name: "ReportItem",
-    embedded: false
-  },
-  {
-    name: "ReportStatus",
-    embedded: false
-  },
-  {
-    name: "SendRecord",
-    embedded: false
-  },
-  {
-    name: "User",
-    embedded: false
-  },
-  {
-    name: "UserRole",
-    embedded: false
-  }
-];

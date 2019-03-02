@@ -20,18 +20,21 @@ const upsertUser = async (parent, args, ctx, info) => {
     console.log('new user', rest);
     user = await ctx.prisma.createUser({ ...rest, createAt: new Date() }, info);
   }
-  // const user = await ctx.prisma.upsertUser({
-  //   where: {
-  //     id
+  // const user = await ctx.prisma.upsertUser(
+  //   {
+  //     where: {
+  //       id
+  //     },
+  //     update: {
+  //       ...rest
+  //     },
+  //     create: {
+  //       ...rest,
+  //       createAt: new Date()
+  //     }
   //   },
-  //   update: {
-  //     ...rest
-  //   },
-  //   create: {
-  //     ...rest,
-  //     createAt: new Date()
-  //   }
-  // });
+  //   info
+  // );
   return user;
 };
 const removeUser = async (parent, args, ctx) => {
@@ -41,22 +44,52 @@ const removeUser = async (parent, args, ctx) => {
   });
   return !!deletedUser;
 };
+const removeReportItem = async (parent, args, ctx) => {
+  const { id } = args;
+  const deletedReportItem = await ctx.prisma.deleteReportItem({
+    id
+  });
+  return !!deletedReportItem;
+};
 const upsertGroup = async (parent, args, ctx, info) => {
   console.log('UPSERT group data', args);
   const { id = '', ...rest } = args.data;
-  const group = await ctx.prisma.upsertGroup({
-    where: {
-      id
+  const group = await ctx.prisma.upsertGroup(
+    {
+      where: {
+        id
+      },
+      update: {
+        ...rest
+      },
+      create: {
+        ...rest,
+        createAt: new Date()
+      }
     },
-    update: {
-      ...rest
-    },
-    create: {
-      ...rest,
-      createAt: new Date()
-    }
-  });
+    info
+  );
   return group;
+};
+const upsertReportItem = async (parent, args, ctx, info) => {
+  console.log('UPSERT reportItem data', args);
+  const { id = '', ...rest } = args.data;
+  const reportItem = await ctx.prisma.upsertReportItem(
+    {
+      where: {
+        id
+      },
+      update: {
+        ...rest
+      },
+      create: {
+        ...rest,
+        createAt: new Date()
+      }
+    },
+    info
+  );
+  return reportItem;
 };
 const upsertReport = async (parent, args, ctx, info) => {
   console.log('UPSERT report data', args);
@@ -75,6 +108,13 @@ const upsertReport = async (parent, args, ctx, info) => {
   });
   return report;
 };
+const removeReport = async (parent, args, ctx) => {
+  const { id } = args;
+  const deletedReport = await ctx.prisma.deleteReport({
+    id
+  });
+  return !!deletedReport;
+};
 const removeGroup = async (parent, args, ctx) => {
   const { id } = args;
   const deletedGroup = await ctx.prisma.deleteGroup({
@@ -82,4 +122,13 @@ const removeGroup = async (parent, args, ctx) => {
   });
   return !!deletedGroup;
 };
-module.exports = { upsertUser, removeUser, upsertGroup, removeGroup, upsertReport };
+module.exports = {
+  upsertUser,
+  removeUser,
+  upsertGroup,
+  removeGroup,
+  upsertReport,
+  removeReport,
+  upsertReportItem,
+  removeReportItem
+};

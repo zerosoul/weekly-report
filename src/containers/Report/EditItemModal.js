@@ -58,7 +58,7 @@ class EditItemModal extends Component {
                       message: '工作内容不能为空！'
                     }
                   ]
-                })(<Input.TextArea placeholder="工作内容" />)}
+                })(<Input.TextArea placeholder="简述工作内容" />)}
               </Item>
             </Col>
             <Col span={24}>
@@ -78,7 +78,7 @@ class EditItemModal extends Component {
               <Item label="备注" {...ColLayout}>
                 {getFieldDecorator('remark', {
                   initialValue: remark
-                })(<Input.TextArea placeholder="备注" />)}
+                })(<Input.TextArea rows={8} placeholder="在这里可以详述工作内容，或者其它" />)}
               </Item>
             </Col>
           </Row>

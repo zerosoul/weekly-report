@@ -25,7 +25,7 @@ type Group {
 # 周报
 type Report {
   id: ID! @unique
-  title: String!
+  title: String! @unique
   status: ReportStatus! @default(value: UNSEND)
   range: TimeRange!
   sendBy: User!
@@ -56,10 +56,16 @@ enum ItemType {
   TODO
 }
 #角色
+"""
+user role description
+"""
 enum UserRole {
   ADMIN
+
   LEADER
+
   MANAGER
+
   STAFF
 }
 # 发送记录
@@ -69,4 +75,7 @@ type SendRecord {
   sendBy: User!
   createAt: DateTime!
   success: Boolean! @default(value: "true")
+}
+type EEE {
+  id: ID! @unique
 }

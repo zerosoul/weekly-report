@@ -10,6 +10,7 @@ type Group {
 }
 type Query {
   group(id: ID, name: String, email: String): Group!
+  report(id: ID): Report!
   userList(skip: Int, first: Int, filter: UserFilterInput, orderBy: String): UserList!
   reportList(skip: Int, first: Int, filter: ReportFilterInput, orderBy: String): ReportList!
   groupList(skip: Int, first: Int, filter: GroupFilterInput, orderBy: String): GroupList!
@@ -37,9 +38,13 @@ type GroupList {
 }
 type Mutation {
   upsertUser(data: UserInput!): User!
+  upsertReport(data: ReportInput!): Report!
+  upsertReportItem(data: ReportItemInput!): ReportItem!
   upsertGroup(data: GroupInput!): Group!
   removeGroup(id: ID!): Boolean!
   removeUser(id: ID!): Boolean!
+  removeReport(id: ID!): Boolean!
+  removeReportItem(id: ID!): Boolean!
 }
 # 周报输入项
 input ReportFilterInput {
@@ -59,6 +64,19 @@ input UserInput {
   birthday: String
   sex: Int
   group: ID
+}
+# 周报输入项
+input ReportInput {
+  id: ID
+  title: String
+  items: [ID!]!
+}
+# 周报项输入项
+input ReportItemInput {
+  id: ID
+  content: String
+  progress: String
+  remark: String
 }
 # 组输入项
 input GroupInput {
@@ -124,9 +142,13 @@ enum ItemType {
 }
 #角色
 enum UserRole {
+  "管理员"
   ADMIN
+  "领导"
   LEADER
+  "经理"
   MANAGER
+  "员工"
   STAFF
 }
 # 发送记录
